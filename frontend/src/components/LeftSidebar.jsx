@@ -6,11 +6,12 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
+import PostOrCity from './PostOrCity';
 import { setAuthUser } from '../redux/authSlice';
 import { setPosts, setSelectedPost } from '../redux/postSlice';
 import { persistor } from "../redux/store";
 import api from '../lib/axios';
-import PostOrCity from './postorcity';
+
 
 const LeftSidebar = () => {
   const navigate = useNavigate();
