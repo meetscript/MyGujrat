@@ -49,7 +49,6 @@ const CommentDialog = ({ open, setOpen }) => {
   };
 
   if (!open) return null;
-
   return (
    <div className="fixed inset-0 z-50 flex items-center justify-center bg-base-content/60">
   <div className="relative bg-base-100 rounded-lg shadow-xl w-[90vw] max-w-5xl h-[80vh] flex overflow-hidden">
@@ -79,7 +78,7 @@ const CommentDialog = ({ open, setOpen }) => {
           </Link>
           <div>
             <Link className="font-semibold text-sm hover:underline text-base-content">
-              {selectedPost?.author?.username}
+              {selectedPost?.author?.username || "Unknown User"}
             </Link>
           </div>
         </div>

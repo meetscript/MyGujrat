@@ -172,10 +172,30 @@ export const getProfile = async (req, res) => {
       .select("-password")
       .populate({
         path: "posts",
-        select: "image caption explaination likes comments createdAt",
+        select: "author image caption explaination likes comments createdAt",
         options: { sort: { createdAt: -1 } },
+        populate: [
+          {
+            path: "author",
+            select: "username profilePicture",
+          },
+          {
+            path: "comments",
+            populate: {
+              path: "author",
+              select: "username profilePicture",
+            },
+          },
+        ],
       })
-      .populate("bookmarks", "image caption explaination")
+      .populate({
+        path: "bookmarks",
+        select: "image caption explaination",
+        populate: {
+          path: "author",
+          select: "username profilePicture",
+        },
+      })
       .populate("followers", "username profilePicture")
       .populate("following", "username profilePicture");
 
@@ -198,6 +218,7 @@ export const getProfile = async (req, res) => {
     });
   }
 };
+
 
 export const searchUsers = async (req, res) => {
   try {

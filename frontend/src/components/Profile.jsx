@@ -135,7 +135,7 @@ const navigate = useNavigate();
                       <button
                         className="btn btn-outline btn-sm"
                         onClick={() => {
-                          dispatch(setSelectedUser(userProfile));
+                          dispatch(setSelected(userProfile));
                           navigate('/chat');
                         }}
                       >
