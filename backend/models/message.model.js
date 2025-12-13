@@ -13,6 +13,14 @@ const messageSchema = new mongoose.Schema({
         type: String,
         default: ""
     },
-    image: { type: String, default: "" },
-},{timpestamps: true});
+    image: {
+        type: String,
+        default: ""
+    },
+    sharedPost: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post",
+        default: null
+    }
+}, { timpestamps: true });
 export const Message = mongoose.model('Message', messageSchema);

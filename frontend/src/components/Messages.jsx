@@ -73,7 +73,7 @@ const Messages = ({ selectedUser }) => {
               >
                 <div
                   className={cn(
-                    "rounded-lg px-3 py-2 max-w-[75%] lg:max-w-md break-words",
+                    "rounded-3xl px-3 py-2 max-w-[75%] lg:max-w-md break-words",
                     isSender
                       ? "bg-primary text-primary-content"
                       : "bg-secondary text-secondary-content"
@@ -88,7 +88,50 @@ const Messages = ({ selectedUser }) => {
                       onClick={() => window.open(msg.image, "_blank")}
                     />
                   )}
+                  {
+                    msg.sharedPost && (
+                      <div className="max-w-xs rounded-xl border border-base-300 bg-base-100 overflow-hidden shadow-sm">
 
+                        {/* Author Header */}
+                        <div className="flex items-center gap-2 p-2 border-b border-base-300">
+
+                          {msg.sharedPost.author.profilePicture ? (
+                            <img
+                              src={msg.sharedPost.author.profilePicture}
+                              alt="author"
+                              className="w-8 h-8 rounded-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-8 h-8 rounded-full bg-base-200 flex items-center justify-center">
+                              <User className="w-4 h-4 text-gray-500" />
+                            </div>
+                          )}
+
+                          <Link
+                            to={`/profile/${msg.sharedPost.author._id}`}
+                            className="text-sm font-semibold hover:underline"
+                          >
+                            {msg.sharedPost.author.username}
+                          </Link>
+                        </div>
+
+                        {/* Post Image */}
+                        <img
+                          src={msg.sharedPost.image}
+                          alt="shared post"
+                          className="w-full h-[300px] cursor-pointer"
+                          onClick={() =>
+                            window.open(
+                              `https://mygujrat.onrender.com/post/${msg.sharedPost._id}`,
+                              "_blank"
+                            )
+                          }
+                        />
+
+                      </div>
+
+                    )
+                  }
                   {/* Text message */}
                   {msg.message && (
                     <p className="text-sm leading-relaxed">

@@ -8,7 +8,6 @@ import api from '../lib/axios';
 import toast from 'react-hot-toast';
 import { setSelectedUser, setUserProfile } from '../redux/authSlice';
 import FollowDialog from './followdialog.jsx';
-import CommentDialog from './CommentDialog.jsx';
 import { setSelectedPost } from '../redux/postSlice';
 import { useNavigate } from 'react-router-dom';
 const Profile = () => {
@@ -17,9 +16,8 @@ const Profile = () => {
   const dispatch = useDispatch();
 const navigate = useNavigate();
   useGetUserProfile(userId);
-  const [open, setOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('posts');
-  const { userProfile, user } = useSelector(store => store.auth);
+  const { userProfile, user} = useSelector(store => store.auth);
   const isLoggedInUserProfile = user?._id === userProfile?._id;
 
   const [isFollowing, setIsFollowing] = useState(false);
@@ -135,7 +133,7 @@ const navigate = useNavigate();
                       <button
                         className="btn btn-outline btn-sm"
                         onClick={() => {
-                          dispatch(setSelected(userProfile));
+                          dispatch(setSelectedUser(userProfile));
                           navigate('/chat');
                         }}
                       >

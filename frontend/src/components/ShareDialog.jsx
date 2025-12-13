@@ -3,7 +3,7 @@ import { User as UserIcon } from "lucide-react";
 import api from "../lib/axios";
 
 export default function ShareDialog({ open, onClose, msgusers ,postId }) {
-  const msg=`Check out this post: https://mygujrat.onrender.com/post/${postId}`;
+  const msg="this fucking person shared a post with you";
   const [selectedUsers, setSelectedUsers] = useState([]);
   const toggleUser = (userId) => {
     setSelectedUsers((prev) =>
@@ -13,12 +13,14 @@ export default function ShareDialog({ open, onClose, msgusers ,postId }) {
     );
   };
 
+  
   const handleSend = async () => {
     try {
+      if (selectedUsers.length === 0) return;
       for (const receiverId of selectedUsers) {
         await api.post(
-          `message/send/${receiverId}`,
-          { textMessage: msg},
+          `message/send/post/${receiverId}`,
+        { textMessage: msg, postId },
           {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,

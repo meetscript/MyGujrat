@@ -26,7 +26,6 @@ const Post = ({ post }) => {
   const [postLike, setPostLike] = useState(post.likes.length);
   const [comment, setComment] = useState(post.comments);
   const dispatch = useDispatch();
-  //  console.log("saved?", saved);
   const changeEventHandler = (e) => {
     const inputText = e.target.value;
     setText(inputText.trim() ? inputText : "");
