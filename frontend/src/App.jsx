@@ -17,6 +17,7 @@ import { setLikeNotification } from './redux/rtnSlice'
 import ProtectedRoutes from './components/ProtectedRoutes'
 import SearchUsers from './components/SearchUsers'
 import CommentDialog from './components/CommentDialog'
+
 const browserRouter = createBrowserRouter([
   {
     path: "/",
@@ -77,7 +78,6 @@ function App() {
       });
       dispatch(setSocket(socketio));
 
-      // listen all the events
       socketio.on('getOnlineUsers', (onlineUsers) => {
         dispatch(setOnlineUsers(onlineUsers));
       });

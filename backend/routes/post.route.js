@@ -5,7 +5,7 @@ import { addcityPost, addComment, addNewPost, bookmarkPost, deletePost, dislikeP
 
 const router = express.Router();
 
-router.route("/addpost").post(isAuthenticated, upload.single('image'), addNewPost);
+router.route("/addpost").post(isAuthenticated,upload.array("images", 10), addNewPost);
 router.route("/all").get(isAuthenticated,getAllPost);
 router.route("/userpost/all").get(isAuthenticated, getUserPost);
 router.route("/:id/like").get(isAuthenticated, likePost);
@@ -15,7 +15,7 @@ router.route("/:id/comment/all").post(isAuthenticated, getCommentsOfPost);
 router.route("/delete/:id").delete(isAuthenticated, deletePost);
 router.route("/:id/bookmark").get(isAuthenticated, bookmarkPost);
 router.route("/cities").get(isAuthenticated, getAllcities);
-router.post('/addcity',isAuthenticated, upload.single('image'), addcityPost);
+router.post('/addcity',isAuthenticated, upload.array("images", 10), addcityPost);
 router.route('/deletecity/:id').delete(isAuthenticated,deletecitypost); 
 export default router;
 

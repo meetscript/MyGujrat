@@ -154,6 +154,7 @@ export const logout = (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 export const getalluser = async (req, res) => {
   try {
     const userId = req.id; // assuming JWT middleware sets req.user
@@ -182,6 +183,7 @@ export const getalluser = async (req, res) => {
     });
   }
 };
+
 export const getProfile = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -236,7 +238,6 @@ export const getProfile = async (req, res) => {
     });
   }
 };
-
 
 export const searchUsers = async (req, res) => {
   try {
@@ -327,8 +328,6 @@ export const editProfile = async (req, res) => {
     });
   }
 };
-
-
 
 export const getSuggestedUsers = async (req, res) => {
   try {

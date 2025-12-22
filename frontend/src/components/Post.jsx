@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Bookmark, MessageCircle, MoreHorizontal, Send, MapPin } from 'lucide-react'
+import { Bookmark, MessageCircle, MoreHorizontal, Send, MapPin ,ChevronLeft,ChevronRight} from 'lucide-react'
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import CommentDialog from './CommentDialog'
 import LocationMapDialog from './LocationMapDialog'
@@ -14,11 +14,17 @@ import { useNavigate } from 'react-router-dom';
 const Post = ({ post }) => {
   // console.log("post in post component:", post);
   const navigate = useNavigate();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const images = post.images?.length
+  ? post.images
+  : post.image
+  ? [post.image]
+  : [];
+  console.log("images in post component ===:", post.images);
   const [text, setText] = useState("");
-  // const [open, setOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
-  const { user ,msgusers} = useSelector(store => store.auth);
+  const { user, msgusers } = useSelector(store => store.auth);
   console.log("current user in post component:", user);
   const { posts } = useSelector(store => store.post);
   const [liked, setLiked] = useState(post.likes.includes(user?._id) || false);
@@ -30,6 +36,19 @@ const Post = ({ post }) => {
     const inputText = e.target.value;
     setText(inputText.trim() ? inputText : "");
   };
+
+  const prevImage = () => {
+    if (currentImageIndex > 0) {
+      setCurrentImageIndex(prev => prev - 1);
+    }
+  };
+
+  const nextImage = () => {
+    if (currentImageIndex < images.length - 1) {
+      setCurrentImageIndex(prev => prev + 1);
+    }
+  };
+
 
   const likeOrDislikeHandler = async () => {
     console.log("like/dislike clicked");
@@ -194,11 +213,46 @@ const Post = ({ post }) => {
       )}
 
       {/* Image */}
-      <img
-        className="rounded-sm my-2 w-full aspect-square object-cover"
-        src={post.image}
-        alt="post_img"
-      />
+      <div className="relative my-2 w-full aspect-square overflow-hidden rounded-sm">
+
+        {/* Image */}
+        {/* Image Slider */}
+        {images.length > 0 && (
+          <div className="relative my-2">
+            <img
+              src={images[currentImageIndex]}
+              alt={`post_img_${currentImageIndex}`}
+              className="rounded-sm w-full aspect-square object-cover"
+            />
+
+            {/* Left Button */}
+            <button
+              onClick={prevImage}
+              disabled={currentImageIndex === 0}
+              className={cn(
+                "absolute left-2 top-1/2 -translate-y-1/2 bg-black/60 text-white p-1 rounded-full",
+                currentImageIndex === 0 && "opacity-40 cursor-not-allowed"
+              )}
+            >
+              <ChevronLeft />
+            </button>
+
+            {/* Right Button */}
+            <button
+              onClick={nextImage}
+              disabled={currentImageIndex === images.length - 1}
+              className={cn(
+                "absolute right-2 top-1/2 -translate-y-1/2 bg-black/60 text-white p-1 rounded-full",
+                currentImageIndex === images.length - 1 && "opacity-40 cursor-not-allowed"
+              )}
+            >
+             <ChevronRight />
+            </button>
+          </div>
+        )}
+
+      </div>
+
 
       {/* Action Buttons */}
       <div className="flex items-center justify-between my-2">
@@ -263,14 +317,14 @@ const Post = ({ post }) => {
           View all {comment.length} comments
         </span>
       )}
-      
+
       <ShareDialog
         open={shareOpen}
         onClose={() => setShareOpen(false)}
         msgusers={msgusers}
         postId={post._id}
       />
-  
+
       <LocationMapDialog
         open={mapOpen}
         setOpen={setMapOpen}

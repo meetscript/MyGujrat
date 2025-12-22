@@ -5,10 +5,10 @@ const citySchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    image:{
+    images:[{
         type: String,
         required: true,
-    },
+    }],
     description:
         {
             type: String,
@@ -21,10 +21,10 @@ const citySchema = new mongoose.Schema({
         lng: { type: Number },
         name: { type: String }
     },
-    public_id: {
+    public_ids: [{
         type: String,
         required: true,
-    },
+    }],
     auther: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
