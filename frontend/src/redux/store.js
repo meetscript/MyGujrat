@@ -8,29 +8,31 @@ import rtnSlice from "./rtnSlice.js";
 import {
   persistReducer,
   persistStore,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-
 const persistConfig = {
   key: 'root',
   version: 1,
   storage,
-  blacklist: ['socketio','realTimeNotification'],
+  blacklist: ['socketio', 'realTimeNotification'],
 };
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   auth: authSlice,
   post: postSlice,
   socketio: socketSlice,
   chat: chatSlice,
   realTimeNotification: rtnSlice,
 });
+
+const rootReducer = (state, action) => {
+  if (action.type === "RESET_STORE") {
+    state = undefined;
+  }
+
+  return appReducer(state, action);
+};
+
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
@@ -42,7 +44,6 @@ export const store = configureStore({
     }),
 });
 
-// ✅ must export persistor *after* store
 export const persistor = persistStore(store);
 
 export default store;

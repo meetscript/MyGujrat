@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { User, ChevronLeft, ChevronRight } from 'lucide-react'
-import SuggestedUsers from './SuggestedUsers'
+import SuggestedUsersCompo from './SuggestedUsersCompo'
 
 const RightSidebar = () => {
   const { user } = useSelector((store) => store.auth)
@@ -50,7 +50,7 @@ const RightSidebar = () => {
 
           {/* Suggested Users Section */}
           <div className="mt-6 border-t border-base-300 pt-4">
-            <SuggestedUsers />
+            <SuggestedUsersCompo />
           </div>
         </div>
       </div>

@@ -187,7 +187,7 @@ export const getalluser = async (req, res) => {
 export const getProfile = async (req, res) => {
   try {
     const userId = req.params.id;
-
+    
     const user = await User.findById(userId)
       .select("-password")
       .populate({
@@ -334,8 +334,9 @@ export const getSuggestedUsers = async (req, res) => {
     const userId = req.id; // assuming JWT middleware sets req.user
 
     // Optional: exclude already-followed users
+    console.log("sugested user called");
     const currentUser = await User.findById(userId);
-
+    console.log("Current user:", currentUser.username);
     const suggestedUsers = await User.find({
       _id: { $ne: userId, $nin: currentUser?.following || [] }
     }).select("-password");

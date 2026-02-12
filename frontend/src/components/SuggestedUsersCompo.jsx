@@ -1,14 +1,14 @@
-import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { User as UserIcon } from 'lucide-react'
-
-const SuggestedUsers = () => {
+const SuggestedUsersCompo = () => {
   const { suggestedUsers } = useSelector(store => store.auth);
-
+  const store = useSelector(store=>store);
+  console.log("store.....");
+console.log(store.auth.suggestedUsers);
+if(!suggestedUsers || suggestedUsers.length === 0) return (<><p className="font-semibold text-base-content/70">no suggested user</p></>)
   return (
    <div className="my-10">
-  {/* Header */}
   <div className="flex items-center justify-between text-sm mb-4">
     <h1 className="font-semibold text-base-content/70">Suggested for you</h1>
     <span className="font-medium text-base-content/80 cursor-pointer hover:underline">
@@ -53,4 +53,4 @@ const SuggestedUsers = () => {
   )
 }
 
-export default SuggestedUsers
+export default SuggestedUsersCompo;

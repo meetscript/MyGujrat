@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import {
   Heart, Home, LogOut, MessageCircle, PlusSquare,
-  Search, TrendingUp, User, Menu, Building2
+  Search, User, Menu, Building2
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import PostOrCity from './PostOrCity';
-import { setAuthUser } from '../redux/authSlice';
+import { setAuthUser, setSuggestedUsers } from '../redux/authSlice';
 import { setPosts, setSelectedPost } from '../redux/postSlice';
 import { persistor } from "../redux/store";
 import api from '../lib/axios';
+import localStorage from 'redux-persist/es/storage';
 
 
 const LeftSidebar = () => {
@@ -23,23 +24,22 @@ const LeftSidebar = () => {
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
-  const logoutHandler = async () => {
-    try {
-      const res = await api.get('/user/logout', { withCredentials: true });
-      if (res.data.success) {
-        dispatch(setAuthUser(null));
-        dispatch(setSelectedPost(null));
-        dispatch(setPosts([]));
-        localStorage.clear();
-        sessionStorage.clear();
-        await persistor.purge();
-        navigate("/login");
-        toast.success(res.data.message);
-      }
-    } catch (error) {
-      toast.error(error?.response?.data?.message || "Logout failed");
+const logoutHandler = async () => {
+  try {
+    const res = await api.get("/user/logout", { withCredentials: true });
+
+    if (res.data.success) {
+       dispatch({ type: "RESET_STORE" }); 
+      await persistor.purge();
+
+      navigate("/login");
+      toast.success(res.data.message);
     }
-  };
+  } catch (error) {
+    toast.error(error?.response?.data?.message || "Logout failed");
+  }
+};
+
 
   const sidebarHandler = (textType) => {
     if (textType === 'Logout') logoutHandler();

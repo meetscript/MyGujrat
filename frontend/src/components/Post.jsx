@@ -137,6 +137,7 @@ const Post = ({ post }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
+    <>
     <div
       className="
     w-full 
@@ -147,8 +148,7 @@ const Post = ({ post }) => {
     hover:-translate-y-1 
     transition-all duration-300 ease-out
     p-3
-  "
-    >
+  ">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -361,19 +361,6 @@ const Post = ({ post }) => {
         </span>
       )}
 
-      <ShareDialog
-        open={shareOpen}
-        onClose={() => setShareOpen(false)}
-        msgusers={msgusers}
-        postId={post._id}
-      />
-
-      <LocationMapDialog
-        open={mapOpen}
-        setOpen={setMapOpen}
-        location={post.location}
-      />
-
       {/* Add Comment */}
       <div className="flex items-center gap-2 border-t border-base-300 mt-2 pt-2">
         <input
@@ -398,7 +385,23 @@ const Post = ({ post }) => {
           </span>
         )}
       </div>
-    </div>);
+    </div>
+    
+      <ShareDialog
+        className={cn("w-full h-full z-1000", !shareOpen && "hidden")}  
+        open={shareOpen}
+        onClose={() => setShareOpen(false)}
+        msgusers={msgusers}
+        postId={post._id}
+      />
+
+      <LocationMapDialog
+        open={mapOpen}
+        setOpen={setMapOpen}
+        location={post.location}
+      />
+
+    </>);
 
 };
 
