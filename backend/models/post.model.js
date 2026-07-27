@@ -6,12 +6,7 @@ const postSchema = new mongoose.Schema({
     author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
-    public_ids: [{ type: String, required: true }],
-    location: {
-        lat: { type: Number },
-        lng: { type: Number },
-        name: { type: String }
-    }
-}, { timestamps: true }); // Fixed: should be in options object, not as a field
+    public_ids: [{ type: String, required: true }]
+}, { timestamps: true }); 
 
 export const Post = mongoose.model('Post', postSchema);

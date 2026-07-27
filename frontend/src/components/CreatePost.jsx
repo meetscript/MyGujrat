@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 import api from '../lib/axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { setPosts, setcities } from '../redux/postSlice'
-import MapPicker from './MapPicker'
 
 const MAX_IMAGES = 10;
 
@@ -19,8 +18,6 @@ const CreatePost = ({ open, setOpen, type = "post", parentClose }) => {
   const [caption, setCaption] = useState("")
   const [city, setCity] = useState("")
   const [loading, setLoading] = useState(false)
-  const [showMap, setShowMap] = useState(false)
-  const [location, setLocation] = useState(null)
 
   const { posts, cities } = useSelector(store => store.post)
   const dispatch = useDispatch()
@@ -43,16 +40,6 @@ const CreatePost = ({ open, setOpen, type = "post", parentClose }) => {
     setImagePreviews(previews)
   }
 
-  const handleLocationSelect = (locationData) => {
-    setLocation(locationData)
-    setShowMap(false)
-    toast.success("Location added!")
-  }
-
-  const removeLocation = () => {
-    setLocation(null)
-    toast.success("Location removed")
-  }
 
   const createPostHandler = async () => {
     // Validation
@@ -82,9 +69,6 @@ const CreatePost = ({ open, setOpen, type = "post", parentClose }) => {
       formData.append("images", file)
     })
 
-    if (location) {
-      formData.append("location", JSON.stringify(location))
-    }
 
     try {
       setLoading(true)
@@ -111,7 +95,6 @@ const CreatePost = ({ open, setOpen, type = "post", parentClose }) => {
         setCity("")
         setFiles([])
         setImagePreviews([])
-        setLocation(null)
       }
     } catch (error) {
       toast.error(error?.response?.data?.message || "Failed to create post.")
@@ -156,23 +139,8 @@ const CreatePost = ({ open, setOpen, type = "post", parentClose }) => {
             placeholder="Write something..."
           />
 
-          {/* Location */}
-          <div className="mb-3">
-            {location ? (
-              <div className="flex items-center gap-2 p-2 bg-base-200 rounded">
-                <MapPin size={16} />
-                <span className="flex-1 text-sm">{location.name}</span>
-                <X onClick={removeLocation} className="cursor-pointer" />
-              </div>
-            ) : (
-              <button
-                onClick={() => setShowMap(true)}
-                className="btn btn-outline btn-sm w-full"
-              >
-                Add Location
-              </button>
-            )}
-          </div>
+
+      
 
           {/* ⭐ Image Upload */}
           <div
@@ -216,13 +184,6 @@ const CreatePost = ({ open, setOpen, type = "post", parentClose }) => {
           </button>
         </div>
       </div>
-
-      {showMap && (
-        <MapPicker
-          onLocationSelect={handleLocationSelect}
-          onClose={() => setShowMap(false)}
-        />
-      )}
     </>
   )
 }

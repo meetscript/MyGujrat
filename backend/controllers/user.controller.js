@@ -157,9 +157,7 @@ export const logout = (req, res) => {
 
 export const getalluser = async (req, res) => {
   try {
-    const userId = req.id; // assuming JWT middleware sets req.user
-
-    // Optional: exclude already-followed users
+    const userId = req.id; 
     const currentUser = await User.findById(userId);
 
     const suggestedUsers = await User.find().select("-password");
@@ -192,7 +190,7 @@ export const getProfile = async (req, res) => {
       .select("-password")
       .populate({
         path: "posts",
-        select: "author image caption explaination likes comments createdAt",
+        select: "author images caption explaination likes comments createdAt",
         options: { sort: { createdAt: -1 } },
         populate: [
           {

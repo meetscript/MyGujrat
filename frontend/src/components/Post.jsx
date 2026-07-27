@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Bookmark, MessageCircle, MoreHorizontal, Send, MapPin, ChevronLeft, ChevronRight } from 'lucide-react'
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import CommentDialog from './CommentDialog'
-import LocationMapDialog from './LocationMapDialog'
 import { useDispatch, useSelector } from 'react-redux'
 import toast from "react-hot-toast";
 import { setPosts, setSelectedPost } from '../redux/postSlice'
@@ -126,14 +125,8 @@ const Post = ({ post }) => {
     }
   };
 
-  const handleLocationClick = () => {
-    if (post.location && post.location.lat && post.location.lng) {
-      setMapOpen(true);
-    } else {
-      toast.error("Location for this post is not available");
-    }
-  };
 
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -150,6 +143,7 @@ const Post = ({ post }) => {
     p-3
   ">
       {/* Header */}
+     
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           {/* Avatar */}
@@ -209,7 +203,7 @@ const Post = ({ post }) => {
               </button>
               {user && user?._id === post?.author._id && (
                 <button
-                  onClick={deletePostHandler}
+                onClick={()=>setDeleteOpen(true)}
                   className="px-4 py-2 hover:bg-base-200 text-left"
                 >
                   Delete
@@ -219,25 +213,10 @@ const Post = ({ post }) => {
           )}
         </div>
       </div>
-
-      {/* Location */}
-      {post.location?.name && (
-        <div
-          onClick={handleLocationClick}
-          className="
-        flex items-center gap-1 
-        mt-1 
-        text-xs 
-        text-base-content/60 
-        cursor-pointer 
-        hover:text-primary
-      "
-        >
-          <MapPin className="w-3 h-3" />
-          <span className="truncate">{post.location.name}</span>
-        </div>
-      )}
-
+  
+   <span className="text-xs text-base-content/40">
+                {new Date(post.createdAt).toLocaleString()}
+              </span>
       {/* Image */}
       {images.length > 0 && (
         <div className="relative my-2 overflow-hidden rounded-xl">
@@ -394,13 +373,29 @@ const Post = ({ post }) => {
         msgusers={msgusers}
         postId={post._id}
       />
+              {
+            deleteOpen && ( 
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                <div className="bg-base-100 p-6 rounded-xl shadow-lg">
+                  <h2 className="text-lg font-semibold mb-4">Confirm Deletion</h2>
+                  <p className="mb-6">Are you sure you want to delete this post?</p>
 
-      <LocationMapDialog
-        open={mapOpen}
-        setOpen={setMapOpen}
-        location={post.location}
-      />
+                  <div className="flex justify-end gap-4">
+                    <button
+                      onClick={() => setDeleteOpen(false)}  
+                      className="px-4 py-2 bg-gray-300 rounded-md hover:bg-gray-400"
+                    > 
+                      Cancel
+                    </button>
+                    <button onClick={deletePostHandler} className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600">
+                      Delete
+                    </button>     
+                  </div>
+                </div>
+              </div>
 
+            )
+          }
     </>);
 
 };

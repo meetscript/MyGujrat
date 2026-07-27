@@ -59,25 +59,11 @@ export const addNewPost = async (req, res) => {
             publicIds.push(cloudResponse.public_id);
         }
 
-        // Parse location (FormData safe)
-        let locationData = null;
-        if (location) {
-            locationData =
-                typeof location === "string" ? JSON.parse(location) : location;
-        }
-
         const newPost = await Post.create({
             caption: caption?.trim() || "",
             images: imageUrls,
             public_ids: publicIds,
             author: authorId,
-            location: locationData
-                ? {
-                    lat: locationData.lat,
-                    lng: locationData.lng,
-                    name: locationData.name,
-                }
-                : undefined,
         });
 
         await User.findByIdAndUpdate(authorId, {
@@ -135,20 +121,11 @@ export const addcityPost = async (req, res) => {
             publicIds.push(cloudResponse.public_id);
         }
 
-        let locationData = null;
-        if (location) {
-            locationData = typeof location === 'string' ? JSON.parse(location) : location;
-        }
         console.log("come3");
         const newCityPost = await City.create({
             name,
             images: urls,
             description,
-            location: locationData ? {
-                lat: locationData.lat,
-                lng: locationData.lng,
-                name: locationData.name
-            } : undefined,
             public_ids: publicIds,
             auther: userId
         });

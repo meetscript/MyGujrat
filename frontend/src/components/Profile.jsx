@@ -187,35 +187,87 @@ const navigate = useNavigate();
           </div>
 
           {/* Posts Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-            {displayedPost?.map((post) => (
-              <div onClick={() => {
-                dispatch(setSelectedPost(post));
-                navigate(`/post/${post._id}`);
-              }}
-                key={post?._id}
-                className="relative group cursor-pointer rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
-              >
-                <img
-                  src={post.image}
-                  alt="postimage"
-                  className="w-full aspect-square object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300">
-                  <div className="flex items-center text-white space-x-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <button className="flex items-center gap-2 hover:text-gray-300 transition-colors">
-                      <Heart className="w-5 h-5" />
-                      <span className="font-medium">{post?.likes?.length || 0}</span>
-                    </button>
-                    <button className="flex items-center gap-2 hover:text-gray-300 transition-colors">
-                      <MessageCircle className="w-5 h-5" />
-                      <span className="font-medium">{post?.comments?.length || 0}</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
+<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
+  {displayedPost?.map((post) => (
+    <div
+      onClick={() => {
+        dispatch(setSelectedPost(post));
+        navigate(`/post/${post._id}`);
+      }}
+      key={post?._id}
+      className="relative group cursor-pointer rounded-2xl overflow-hidden"
+      style={{
+        boxShadow: "0 4px 24px rgba(0,0,0,0.10)",
+        background: "#18181b",
+        transition: "transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s",
+      }}
+      onMouseEnter={e => {
+        e.currentTarget.style.transform = "translateY(-6px) scale(1.02)";
+        e.currentTarget.style.boxShadow = "0 12px 40px rgba(0,0,0,0.22)";
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.transform = "translateY(0) scale(1)";
+        e.currentTarget.style.boxShadow = "0 4px 24px rgba(0,0,0,0.10)";
+      }}
+    >
+      {/* Image */}
+      <img
+        src={post.images?.[0]}
+        alt="post"
+        className="w-full h-[280px] object-cover block"
+        style={{ transition: "filter 0.3s" }}
+      />
+
+      {/* Hover Overlay */}
+      <div
+        className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100"
+        style={{
+          background: "linear-gradient(135deg, rgba(0,0,0,0.55) 0%, rgba(30,10,60,0.72) 100%)",
+          backdropFilter: "blur(2px)",
+          transition: "opacity 0.3s",
+        }}
+      >
+        {/* Stats Row */}
+        <div className="flex items-center gap-8">
+          {/* Likes */}
+          <div className="flex flex-col items-center gap-1 text-white">
+            <div className="flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              </svg>
+              <span className="text-xl font-bold" style={{ fontFamily: "Georgia, serif", letterSpacing: "0.02em" }}>
+                {post?.likes?.length || 0}
+              </span>
+            </div>
+            <span className="text-xs uppercase tracking-widest text-white/70">Likes</span>
           </div>
+
+          {/* Divider */}
+          <div style={{ width: 1, height: 36, background: "rgba(255,255,255,0.25)", borderRadius: 1 }} />
+
+          {/* Comments */}
+          <div className="flex flex-col items-center gap-1 text-white">
+            <div className="flex items-center gap-2">
+              <MessageCircle className="w-6 h-6" />
+              <span className="text-xl font-bold" style={{ fontFamily: "Georgia, serif", letterSpacing: "0.02em" }}>
+                {post?.comments?.length || 0}
+              </span>
+            </div>
+            <span className="text-xs uppercase tracking-widest text-white/70">Comments</span>
+          </div>
+        </div>
+
+        {/* View Post label */}
+        <div
+          className="mt-5 px-5 py-1.5 rounded-full text-xs tracking-widest uppercase text-white/90 border border-white/30"
+          style={{ background: "rgba(255,255,255,0.10)", letterSpacing: "0.15em" }}
+        >
+          View Post
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
           {/* Empty State */}
           {(!displayedPost || displayedPost.length === 0) && (
             <div className="text-center py-16 text-gray-500">
